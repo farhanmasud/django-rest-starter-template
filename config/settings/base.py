@@ -48,9 +48,12 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "drf_yasg",
+    "django_extensions",
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "accounts.apps.AccountsConfig",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -91,13 +94,6 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 
 DATABASES = {
     "default": {
@@ -109,6 +105,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "accounts.Account"
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -182,11 +179,24 @@ REST_FRAMEWORK = {
 SITE_ID = 1
 
 
-# allauth / dj-rest-auth
+# allauth + dj-rest-auth
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+# Settings for email as username
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+
+# After 10 failed login attempts, restrict logins for 30 minutes
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 1800
+ACCOUNT_PASSWORD_MIN_LENGTH = 12
+
+# email backend for testing
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 # swagger
