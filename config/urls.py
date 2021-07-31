@@ -10,11 +10,11 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Test API",
+        title="Instagram Clone API",
         default_version="v1",
-        description="Test API",
+        description="Instagram Clone API",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="test@test.com"),
+        contact=openapi.Contact(email="farhan@farhanmasud.io"),
         license=openapi.License(name="BSD License"),
         url="/",
     ),
@@ -25,11 +25,16 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("auth/", include("dj_rest_auth.urls")),
-    path("auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("accounts/", include("allauth.urls")),
+    path("auth/", include(("dj_rest_auth.urls", "auth"), namespace="auth")),
     path(
-        "swagger-api/",
+        "auth/registration/",
+        include(
+            ("dj_rest_auth.registration.urls", "registration"), namespace="registration"
+        ),
+    ),
+    path("accounts/", include(("allauth.urls", "accounts"), namespace="accounts")),
+    path(
+        "api-documentation/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
