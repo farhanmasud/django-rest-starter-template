@@ -36,6 +36,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.sites",
+    "whitenoise.runserver_nostatic",  # exception, third party app
     "django.contrib.staticfiles",
 ]
 
